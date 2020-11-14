@@ -1,0 +1,11 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - github.com/sim1/katalog/kube-prometheus?ref=master
+
+configMapGenerator:
+  - name: kube-prometheus-config
+    behavior: merge
+    namespace: monitoring
+    envs:
+      - kube-prometheus.env

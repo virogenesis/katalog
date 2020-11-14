@@ -1,0 +1,9 @@
+varReference:
+  - path: spec/tls/hosts
+    kind: Ingress
+  - path: spec/rules/host
+    kind: Ingress
+  - path: spec/resources/requests/storage
+    kind: PersistentVolumeClaim
+  - path: spec/storage/volumeClaimTemplate/spec/resources/requests/storage
+    kind: Prometheus
