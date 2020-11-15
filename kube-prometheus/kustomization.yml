@@ -4,7 +4,9 @@ configurations:
   - kustomizeconfig.yml
 
 bases:
-  - github.com/prometheus-operator/kube-prometheus?ref=master
+  - github.com/prometheus-operator/prometheus-operator?ref=master
+  - github.com/sim1/k8s-prometheus-adapter?ref=master
+  - github.com/kubernetes/kube-state-metrics/
 
 resources:
   - additional-resources.yml

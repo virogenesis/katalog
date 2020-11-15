@@ -1,3 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -19,6 +23,32 @@ spec:
               serviceName: grafana
               servicePort: 3000
             path: /
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: k8s
+  name: k8s
+  namespace: monitoring
+spec:
+  image: quay.io/prometheus/prometheus:v2.22.1
+  replicas: 2
+  resources:
+    requests:
+      memory: 400Mi
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-k8s
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: $(PROMETHEUS_STORAGE_SIZE)
+  version: v2.22.1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -46,3 +76,64 @@ spec:
   groupPriorityMinimum: 100
   versionPriority: 100
 ---
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  name: v1beta2.custom.metrics.k8s.io
+spec:
+  service:
+    name: prometheus-adapter
+    namespace: monitoring
+  group: custom.metrics.k8s.io
+  version: v1beta2
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 200
+---
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  name: v1beta1.external.metrics.k8s.io
+spec:
+  service:
+    name: prometheus-adapter
+    namespace: monitoring
+  group: external.metrics.k8s.io
+  version: v1beta1
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 100
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+  name: system:prometheus-k8s:metrics-service
+rules:
+- nonResourceURLs:
+    - "/apis/metrics.k8s.io/v1beta1"
+    - "/apis/custom.metrics.k8s.io/v1beta1"
+    - "/apis/external.metrics.k8s.io/v1beta1"
+    - "/openapi/v2"
+  verbs: [ "get" ]
+- apiGroups:
+  - "metrics.k8s.io"
+  resources:
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:prometheus-k8s:metrics-service
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:prometheus-k8s:metrics-service
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: system:anonymous

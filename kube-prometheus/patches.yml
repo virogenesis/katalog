@@ -11,39 +11,3 @@ spec:
           emptyDir: null
           persistentVolumeClaim:
             claimName: grafana-storage
----
-apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
-metadata:
-  name: k8s
-  namespace: monitoring
-spec:
-  storage:
-    volumeClaimTemplate:
-      spec:
-        #storageClassName: ssd
-        resources:
-          requests:
-            storage: "$(PROMETHEUS_STORAGE_SIZE)"
-  serviceMonitorSelector:
-    matchLabels:
-      prometheus/scraped: "true"
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: prometheus-k8s
-rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources:
-  - configmaps
-  verbs: ["get"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
