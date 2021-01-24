@@ -64,9 +64,11 @@ metadata:
 spec:
   template:
     spec:
-      - name: kube-metrics-adapter
-        args:
-          # - --v=9
-          - --prometheus-server=http://prometheus-k8s.monitoring:9090
-          - --skipper-ingress-metrics
-          - --aws-external-metrics
+      containers:
+        - name: kube-metrics-adapter
+          args:
+            [
+              "--prometheus-server=http://prometheus-k8s.monitoring:9090",
+              "--skipper-ingress-metrics",
+              "--aws-external-metrics",
+            ]

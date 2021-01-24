@@ -6,6 +6,7 @@ configurations:
 bases:
   - github.com/prometheus-operator/kube-prometheus?ref=master
   - github.com/sim1/kube-metrics-adapter?ref=patch-1
+  - github.com/sim1/katalog/loki-stack?ref=loki
 resources:
   - additional-resources.yml
 patchesStrategicMerge:

@@ -1,0 +1,66 @@
+loki:
+  enabled: true
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 100Gi
+  replicas: 1
+
+grafana:
+  enabled: false
+  sidecar:
+    datasources:
+      enabled: true
+  image:
+    tag: 6.7.0
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  persistence:
+    type: pvc
+    enabled: true
+    # storageClassName: default
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    # annotations: {}
+    finalizers:
+      - kubernetes.io/pvc-protection
+  # subPath: ""
+  # existingClaim:
+  grafana.ini:
+    paths:
+      data: /var/lib/grafana/data
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning
+    analytics:
+      check_for_updates: true
+    log:
+      mode: console
+    grafana_net:
+      url: https://grafana.net
+    users:
+      allow_sign_up: false
+      auto_assign_org: true
+      auto_assign_org_role: Editor
+    auth.proxy:
+      enabled: true
+      header_name: X-Pomerium-Claim-Email
+      header_property: email
+      auto_sign_up: true
+      whitelist: 10.0.0.0/8
+
+prometheus:
+  enabled: false
+
+promtail:
+  enabled: true
+
+fluent-bit:
+  enabled: false
