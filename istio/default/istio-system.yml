@@ -10,3 +10,15 @@ metadata:
   name: istio-system
 spec:
   profile: default
+  values:
+    global:
+      proxy:
+        autoInject: enabled
+  addonComponents:
+    pilot:
+      enabled: true
+
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: true
