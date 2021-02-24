@@ -10,5 +10,3 @@ metadata:
   namespace: knative-eventing
 spec:
   version: 0.20.0  # FIXME hardcoded
-  high-availability:
-    replicas: 2
