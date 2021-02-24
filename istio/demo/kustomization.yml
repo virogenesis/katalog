@@ -4,11 +4,12 @@ resources:
   - ../default
 patches:
   - target:
+      group: install.istio.io
       version: v1alpha1
       kind: IstioOperator
       name: istio-control-plane
       namespace: istio-system
-    patch:
+    patch: |-
       - op: replace
         path: spec/spec/profile
         value: demo
