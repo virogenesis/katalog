@@ -7,7 +7,7 @@ patches:
       group: install.istio.io
       version: v1alpha1
       kind: IstioOperator
-      name: istio-control-plane
+      name: istio-system
       namespace: istio-system
     patch: |-
       - op: replace
