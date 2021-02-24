@@ -1,0 +1,14 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - ../default
+patches:
+  - target:
+      version: v1alpha1
+      kind: IstioOperator
+      name: istio-control-plane
+      namespace: istio-system
+    patch:
+      - op: replace
+        path: spec/spec/profile
+        value: demo
