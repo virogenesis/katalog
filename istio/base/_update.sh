@@ -12,6 +12,7 @@ cd istio-$VERSION
 
 helm template --no-hooks istio-operator manifests/charts/istio-operator \
   --set operatorNamespace="istio-operator" \
-  --set watchedNamespaces="istio-system" > $DIR/istio-operator.yml
-echo $(pwd)/istio-operator.yml
+  --set watchedNamespaces="istio-system" \
+  --set enableCRDTemplates="true" > $DIR/istio-operator.yml
+
 rm -rf "$TMPDIR/istio-$VERSION/"
