@@ -1,0 +1,15 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - ../default
+patches:
+  - target:
+      group: oeerator.knative.dev
+      version: v1alpha1
+      kind: KnativeServing
+      name: knatiive-serving
+      namespace: knative-serving
+    patch: |-
+      - op: replace
+        path: spec/spec/high-availability/replicas
+        value: 1
