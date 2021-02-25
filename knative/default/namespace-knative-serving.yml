@@ -23,6 +23,13 @@ spec:
     network:
       autoTLS: Enabled
       httpProtocol: Redirected
+      domainTemplate: |-
+        {{if index .Annotations "custom-hostname" -}}
+          {{- index .Annotations "custom-hostname" -}}
+        {{else -}}
+          {{- .Name}}-{{.Namespace -}}
+        {{end -}}
+        .{{.Domain}}
 ---
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
