@@ -1,0 +1,9 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - net-certmanager.yml
+  - serving-nscert.yml
+patchesStrategicMerge:
+  - patch-clusterissuer.yml
+commonLabels:
+  serving.knative.dev/release: kustomized
