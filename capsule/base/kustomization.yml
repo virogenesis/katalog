@@ -3,3 +3,5 @@ kind: Kustomization
 
 resources:
   - capsule.yml
+commonLabels:
+  controller-gen.kubebuilder.io/version: kustomized
