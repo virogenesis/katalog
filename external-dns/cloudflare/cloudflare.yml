@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  template:
+    spec:
+      containers:
+      - name: external-dns
+        env:
+        - name: CF_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: external-dns-cloudflare
+              key: CF_API_KEY
+        - name: CF_API_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: external-dns-cloudflare
+              key: CF_API_EMAIL

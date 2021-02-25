@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+  - namespace.yml
+namespace: external-dns
+
+
+patches:
+# add istio
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --source=istio-gateway
+  target:
+    kind: Deployment
+    name: external-dns
+    namespace: external-dns
+# upsert only
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --upsert-only
+  target:
+    kind: Deployment
+    name: external-dns
+    namespace: external-dns

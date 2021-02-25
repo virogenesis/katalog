@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../default
+patchesStrategicMerge:
+  - cloudflare.yml
+
+patches:
+# add cloudflare
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --provider=cloudflare
+  target:
+    kind: Deployment
+    name: external-dns
+    namespace: external-dns
