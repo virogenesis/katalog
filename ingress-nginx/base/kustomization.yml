@@ -1,0 +1,7 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+bases:
+  - ingress-nginx.yml
+commonLabels:
+  helm.sh/chart: ingress-nginx
+  app.kubernetes.io/version: kustomized
