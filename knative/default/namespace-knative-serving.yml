@@ -16,6 +16,16 @@ spec:
   high-availability:
     replicas: 2
   config:
+    autoscaler:
+      requests-per-second-target-default: "200"
+      container-concurrency-target-percentage: "80"
+      max-scale: "10"
+      initial-scale: "1"
+      allow-zero-initial-scale: "false"
+      enable-scale-to-zero: "true"
+      scale-to-zero-grace-period: "10m"
+      scale-to-zero-pod-retention-period: "1h"
+      scale-down-delay: "10m"
     letsencrypt:
       issuerRef: |
         kind: ClusterIssuer
