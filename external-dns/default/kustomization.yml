@@ -14,6 +14,6 @@ patches:
       value: "--source=istio-gateway"
     - op: add
       path: /spec/template/spec/containers/0/args/-
-      value: "--upsert-only"
+      value: "--policy=upsert-only"
   target:
     kind: Deployment
