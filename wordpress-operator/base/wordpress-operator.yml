@@ -1,0 +1,138 @@
+---
+# Source: wordpress-operator/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: wordpress-operator
+  labels:
+    app: 'wordpress-operator'
+    chart: 'wordpress-operator-0.10.2'
+    release: 'wordpress-operator'
+    heritage: 'Helm'
+---
+# Source: wordpress-operator/templates/controller-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: 'wordpress-operator'
+    chart: 'wordpress-operator-0.10.2'
+    heritage: 'Helm'
+    release: 'wordpress-operator'
+  name: 'wordpress-operator'
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  - jobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  - persistentvolumeclaims
+  - secrets
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - wordpress.presslabs.org
+  resources:
+  - wordpresses
+  - wordpresses/status
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+# Source: wordpress-operator/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: wordpress-operator
+  labels:
+    app: 'wordpress-operator'
+    chart: 'wordpress-operator-0.10.2'
+    release: 'wordpress-operator'
+    heritage: 'Helm'
+subjects:
+  - kind: ServiceAccount
+    name: wordpress-operator
+    namespace: wordpress-operator
+roleRef:
+  kind: ClusterRole
+  name: wordpress-operator
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: wordpress-operator/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-operator
+  labels:
+    app: wordpress-operator
+    chart: wordpress-operator-0.10.2
+    release: wordpress-operator
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-operator
+      release: wordpress-operator
+  template:
+    metadata:
+      labels:
+        app: wordpress-operator
+        release: wordpress-operator
+    spec:
+      serviceAccount: wordpress-operator
+      containers:
+        - name: wordpress-operator
+          image: "quay.io/presslabs/wordpress-operator:v0.10.2"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 64Mi
