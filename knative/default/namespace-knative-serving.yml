@@ -40,4 +40,3 @@ spec:
           {{- .Name}}-{{.Namespace -}}
         {{end -}}
         .{{.Domain}}
-      ingress.class: ambassador.ingress.networking.knative.dev
