@@ -12,4 +12,4 @@ metadata:
   name: knative-eventing
   namespace: knative-eventing
 spec:
-  version: 0.20.0  # FIXME hardcoded
+  version: 0.21.0  # FIXME hardcoded
