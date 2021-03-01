@@ -8,10 +8,7 @@ namespace: external-dns
 
 
 patches:
-- patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/args/-
-      value: "--source=istio-gateway"
+- patch: |- 
     - op: add
       path: /spec/template/spec/containers/0/args/-
       value: "--policy=upsert-only"
