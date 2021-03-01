@@ -8,3 +8,8 @@ spec:
   config:
     network:
       ingress.class: contour.ingress.networking.knative.dev
+  ingress:
+    istio:
+      enabled: false
+    contour:
+      enabled: true
