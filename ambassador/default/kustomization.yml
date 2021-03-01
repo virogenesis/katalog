@@ -4,3 +4,29 @@ resources:
   - ../base
 patchesStrategicMerge:
   - patch-knative-support.yml
+
+patches:
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1beta1
+      kind: ClusterRoleBinding
+      name: ambassador
+    patch: |-
+      - op: remove
+        path: /metadata/namespace
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1beta1
+      kind: ClusterRole
+      name: ambassador
+    patch: |-
+      - op: remove
+        path: /metadata/namespace
+  - target:
+      group: getambassador.io
+      version: v2
+      kind: Mapping
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: ambassador

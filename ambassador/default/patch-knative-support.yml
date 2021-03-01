@@ -13,3 +13,4 @@ spec:
           env:
             - name: AMBASSADOR_KNATIVE_SUPPORT
               value: "true"
+          $patch: merge
