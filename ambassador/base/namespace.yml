@@ -5,4 +5,5 @@ metadata:
   name: ambassador
   labels:
     namespace: ambassador
+  annotations:
     linkerd.io/inject: enabled
