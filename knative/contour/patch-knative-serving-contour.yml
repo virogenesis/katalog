@@ -8,8 +8,23 @@ spec:
   config:
     network:
       ingress.class: contour.ingress.networking.knative.dev
+    contour:
+      visibility: |
+            ExternalIP:
+              class: contour-external
+              service: contour-external/envoy
+            ClusterLocal:
+              class: contour-internal
+              service: contour-internal/envoy
   ingress:
     istio:
       enabled: false
     contour:
       enabled: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-contour
+  namespace: knative-serving
+$patch: delete
