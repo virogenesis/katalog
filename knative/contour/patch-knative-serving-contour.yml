@@ -21,10 +21,3 @@ spec:
       enabled: false
     contour:
       enabled: true
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: config-contour
-  namespace: knative-serving
-$patch: delete
