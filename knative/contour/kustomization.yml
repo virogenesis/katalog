@@ -3,6 +3,5 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ../default
-  - net-contour.yml
 patchesStrategicMerge:
   - patch-knative-serving-contour.yml
