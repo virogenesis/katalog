@@ -1,0 +1,9 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+bases:
+  - goldilocks.yml
+  - namespace.yml
+  - vpa.yml
+commonLabels:
+  katalog/app: goldilocks
+namespace: goldilocks
