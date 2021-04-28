@@ -3,8 +3,3 @@ kind: Kustomization
 
 resources:
   - ../base
-
-# FIXME https://github.com/amaizfinance/redis-operator/issues/24
-images:
-  - name: amaiz/redis-operator
-    newTag: latest

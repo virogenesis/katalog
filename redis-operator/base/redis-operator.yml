@@ -291,7 +291,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: amaiz/redis-operator:v0.2.0
+        image: amaiz/redis-operator:v0.2.1
         name: redis-operator
         securityContext:
           allowPrivilegeEscalation: false
