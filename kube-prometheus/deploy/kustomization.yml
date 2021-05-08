@@ -5,7 +5,32 @@ resources:
 
 configMapGenerator:
   - name: kube-prometheus-config
-    behavior: merge
     namespace: monitoring
     envs:
       - kube-prometheus.env
+
+vars:
+  - name: GRAFANA_HOST
+    objref:
+      kind: ConfigMap
+      name: kube-prometheus-config
+      namespace: monitoring
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.GRAFANA_HOST
+  - name: GRAFANA_STORAGE_SIZE
+    objref:
+      kind: ConfigMap
+      name: kube-prometheus-config
+      namespace: monitoring
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.GRAFANA_STORAGE_SIZE
+  - name: PROMETHEUS_STORAGE_SIZE
+    objref:
+      kind: ConfigMap
+      name: kube-prometheus-config
+      namespace: monitoring
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.PROMETHEUS_STORAGE_SIZE

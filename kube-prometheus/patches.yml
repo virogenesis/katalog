@@ -51,22 +51,14 @@ rules:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-adapter
-  namespace: monitoring
-spec:
-  replicas: 0
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: kube-metrics-adapter
   namespace: kube-system
 spec:
   template:
     spec:
+      containers:
       - name: kube-metrics-adapter
         args:
-          # - --v=9
-          - --prometheus-server=http://prometheus-k8s.monitoring:9090
-          - --skipper-ingress-metrics
-          - --aws-external-metrics
+        - --prometheus-server=http://prometheus-k8s.monitoring:9090
+        - --skipper-ingress-metrics
+        - --aws-external-metrics
