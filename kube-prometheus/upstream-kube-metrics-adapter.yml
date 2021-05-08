@@ -1,0 +1,436 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.5.0
+  creationTimestamp: null
+  name: clusterscalingschedules.zalando.org
+spec:
+  group: zalando.org
+  names:
+    kind: ClusterScalingSchedule
+    listKind: ClusterScalingScheduleList
+    plural: clusterscalingschedules
+    singular: clusterscalingschedule
+  scope: Cluster
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ClusterScalingSchedule describes a cluster scoped time based metric to be used in autoscaling operations.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ScalingScheduleSpec is the spec part of the ScalingSchedule.
+            properties:
+              schedules:
+                description: Schedules is the list of schedules for this ScalingSchedule resource. All the schedules defined here will result on the value to the same metric. New metrics require a new ScalingSchedule resource.
+                items:
+                  description: Schedule is the schedule details to be used inside a ScalingSchedule.
+                  properties:
+                    date:
+                      description: Defines the starting date of a OneTime schedule. It has to be a RFC3339 formated date.
+                      format: date-time
+                      type: string
+                    durationMinutes:
+                      description: The duration in minutes that the configured value will be returned for the defined schedule.
+                      type: integer
+                    period:
+                      description: Defines the details of a Repeating schedule.
+                      properties:
+                        days:
+                          description: The days that this schedule will be active.
+                          items:
+                            description: ScheduleDay represents the valid inputs for days in a SchedulePeriod.
+                            enum:
+                            - Sun
+                            - Mon
+                            - Tue
+                            - Wed
+                            - Thu
+                            - Fri
+                            - Sat
+                            type: string
+                          type: array
+                        startTime:
+                          description: The startTime has the format HH:MM
+                          pattern: (([0-1][0-9])|([2][0-3])):([0-5][0-9])
+                          type: string
+                        timezone:
+                          description: The location name corresponding to a file in the IANA Time Zone database, like Europe/Berlin.
+                          type: string
+                      required:
+                      - days
+                      - startTime
+                      - timezone
+                      type: object
+                    type:
+                      description: Defines if the schedule is a OneTime schedule or Repeating one. If OneTime, date has to be defined. If Repeating, Period has to be defined.
+                      enum:
+                      - OneTime
+                      - Repeating
+                      type: string
+                    value:
+                      description: The metric value that will be returned for the defined schedule.
+                      type: integer
+                  required:
+                  - durationMinutes
+                  - type
+                  - value
+                  type: object
+                type: array
+            required:
+            - schedules
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.5.0
+  creationTimestamp: null
+  name: scalingschedules.zalando.org
+spec:
+  group: zalando.org
+  names:
+    kind: ScalingSchedule
+    listKind: ScalingScheduleList
+    plural: scalingschedules
+    singular: scalingschedule
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ScalingSchedule describes a namespaced time based metric to be used in autoscaling operations.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ScalingScheduleSpec is the spec part of the ScalingSchedule.
+            properties:
+              schedules:
+                description: Schedules is the list of schedules for this ScalingSchedule resource. All the schedules defined here will result on the value to the same metric. New metrics require a new ScalingSchedule resource.
+                items:
+                  description: Schedule is the schedule details to be used inside a ScalingSchedule.
+                  properties:
+                    date:
+                      description: Defines the starting date of a OneTime schedule. It has to be a RFC3339 formated date.
+                      format: date-time
+                      type: string
+                    durationMinutes:
+                      description: The duration in minutes that the configured value will be returned for the defined schedule.
+                      type: integer
+                    period:
+                      description: Defines the details of a Repeating schedule.
+                      properties:
+                        days:
+                          description: The days that this schedule will be active.
+                          items:
+                            description: ScheduleDay represents the valid inputs for days in a SchedulePeriod.
+                            enum:
+                            - Sun
+                            - Mon
+                            - Tue
+                            - Wed
+                            - Thu
+                            - Fri
+                            - Sat
+                            type: string
+                          type: array
+                        startTime:
+                          description: The startTime has the format HH:MM
+                          pattern: (([0-1][0-9])|([2][0-3])):([0-5][0-9])
+                          type: string
+                        timezone:
+                          description: The location name corresponding to a file in the IANA Time Zone database, like Europe/Berlin.
+                          type: string
+                      required:
+                      - days
+                      - startTime
+                      - timezone
+                      type: object
+                    type:
+                      description: Defines if the schedule is a OneTime schedule or Repeating one. If OneTime, date has to be defined. If Repeating, Period has to be defined.
+                      enum:
+                      - OneTime
+                      - Repeating
+                      type: string
+                    value:
+                      description: The metric value that will be returned for the defined schedule.
+                      type: integer
+                  required:
+                  - durationMinutes
+                  - type
+                  - value
+                  type: object
+                type: array
+            required:
+            - schedules
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: custom-metrics-apiserver
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custom-metrics-resource-collector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - list
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  verbs:
+  - get
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  verbs:
+  - get
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custom-metrics-resource-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  - services
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custom-metrics-server-resources
+rules:
+- apiGroups:
+  - custom.metrics.k8s.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-metrics-server-resources
+rules:
+- apiGroups:
+  - external.metrics.k8s.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: custom-metrics-auth-reader
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-metrics-resource-collector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: custom-metrics-resource-collector
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-metrics:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: custom-metrics-apiserver
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hpa-controller-custom-metrics
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: custom-metrics-server-resources
+subjects:
+- kind: ServiceAccount
+  name: horizontal-pod-autoscaler
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hpa-controller-external-metrics
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-metrics-server-resources
+subjects:
+- kind: ServiceAccount
+  name: horizontal-pod-autoscaler
+  namespace: kube-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-metrics-adapter
+  namespace: kube-system
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    application: kube-metrics-adapter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: kube-metrics-adapter
+    version: latest
+  name: kube-metrics-adapter
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: kube-metrics-adapter
+  template:
+    metadata:
+      annotations:
+        iam.amazonaws.com/role: kube-aws-test-1-app-zmon
+      labels:
+        application: kube-metrics-adapter
+        version: latest
+    spec:
+      containers:
+      - args:
+        - --prometheus-server=http://prometheus.kube-system.svc.cluster.local
+        - --skipper-ingress-metrics
+        - --aws-external-metrics
+        env:
+        - name: AWS_REGION
+          value: eu-central-1
+        image: registry.opensource.zalan.do/teapot/kube-metrics-adapter:latest
+        name: kube-metrics-adapter
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      serviceAccountName: custom-metrics-apiserver
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1beta1.custom.metrics.k8s.io
+spec:
+  group: custom.metrics.k8s.io
+  groupPriorityMinimum: 100
+  insecureSkipTLSVerify: true
+  service:
+    name: kube-metrics-adapter
+    namespace: kube-system
+  version: v1beta1
+  versionPriority: 100
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1beta1.external.metrics.k8s.io
+spec:
+  group: external.metrics.k8s.io
+  groupPriorityMinimum: 100
+  insecureSkipTLSVerify: true
+  service:
+    name: kube-metrics-adapter
+    namespace: kube-system
+  version: v1beta1
+  versionPriority: 100
