@@ -9,3 +9,12 @@ resources:
   - additional-resources.yml
 patchesStrategicMerge:
   - patches.yml
+
+patches:
+- target:
+    version: v1
+    kind: ServiceMonitor
+  patch: |-
+    - op: add
+      path: "/metadata/labels/prometheus~1scraped"
+      value: true

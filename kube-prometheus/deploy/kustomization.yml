@@ -1,14 +1,14 @@
-kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 resources:
-  - github.com/sim1/katalog/kube-prometheus?ref=master
-
+  - upstream-monitoring.yml
+configurations:
+  - kustomizeconfig.yml
 configMapGenerator:
   - name: kube-prometheus-config
     namespace: monitoring
     envs:
       - kube-prometheus.env
-
 vars:
   - name: GRAFANA_HOST
     objref:
