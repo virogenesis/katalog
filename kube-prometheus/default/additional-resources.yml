@@ -10,7 +10,7 @@ metadata:
   name: grafana
   namespace: monitoring
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   tls:
     - hosts:

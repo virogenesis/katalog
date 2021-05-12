@@ -1,11 +1,6 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
-configurations:
-  - kustomizeconfig.yml
 
 resources:  
   - upstream-kube-prometheus.yml
   - upstream-kube-metrics-adapter.yml
-  - additional-resources.yml
-patchesStrategicMerge:
-  - patches.yml
