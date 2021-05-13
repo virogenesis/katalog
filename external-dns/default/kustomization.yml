@@ -6,3 +6,10 @@ resources:
   - namespace.yml
 namespace: external-dns
 
+patches:
+- patch: |- 
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: "--txt-prefix=edns"
+  target:
+    kind: Deployment
