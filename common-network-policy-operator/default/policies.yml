@@ -1,0 +1,54 @@
+
+---
+apiVersion: commonnetworkpolicies.bells17.io/v1alpha1
+kind: CommonNetworkPolicy
+metadata:
+  name: default-deny-incoming
+  namespace: common-network-policy-operator
+spec:
+  namePrefix: common
+  excludeNamespaces:
+    - kube-system
+    - ingress-nginx
+  policySpec:
+    podSelector:
+      matchLabels: {}
+    ingress: []
+---
+apiVersion: commonnetworkpolicies.bells17.io/v1alpha1
+kind: CommonNetworkPolicy
+metadata:
+  name: allow-ingress-nginx
+spec:
+  namePrefix: common
+  excludeNamespaces:
+    - kube-system
+    - ingress-nginx
+  policySpec:
+    podSelector:
+      matchLabels:
+        allow/ingress-nginx: "true"
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                app.kubernetes.io/name: ingress-nginx
+---
+apiVersion: commonnetworkpolicies.bells17.io/v1alpha1
+kind: CommonNetworkPolicy
+metadata:
+  name: allow-pomerium
+spec:
+  namePrefix: common
+  excludeNamespaces:
+    - kube-system
+    - ingress-nginx
+  policySpec:
+    podSelector:
+      matchLabels:
+        allow/pomerium: "true"
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                app: pomerium
