@@ -2,9 +2,11 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ../base
+  - metrics-service.yml
 patchesStrategicMerge:
   - patch-configmap.yml
   - patch-antiaffinity.yml
+  - patch-metrics-port.yml
 replicas:
   - name: ingress-nginx-controller
     count: 2
