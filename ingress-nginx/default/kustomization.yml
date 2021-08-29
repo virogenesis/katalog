@@ -10,3 +10,9 @@ patchesStrategicMerge:
 replicas:
   - name: ingress-nginx-controller
     count: 2
+patches:
+  - patch: |-
+      - op: remove
+        path: /metadata/namespace
+    target:
+      kind: IngressClass
