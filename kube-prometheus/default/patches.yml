@@ -45,23 +45,8 @@ rules:
   - nonResourceURLs: ["/metrics"]
     verbs: ["get"]
   - apiGroups:
-    - ""
+      - ""
     resources:
-    - nodes/metrics
+      - nodes/metrics
     verbs:
-    - get
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kube-metrics-adapter
-  namespace: kube-system
-spec:
-  template:
-    spec:
-      containers:
-      - name: kube-metrics-adapter
-        args:
-        - --prometheus-server=http://prometheus-k8s.monitoring:9090
-        - --skipper-ingress-metrics
-        - --aws-external-metrics
+      - get
